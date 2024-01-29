@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static  %}
+<style>
+    .no-preview{
+        cursor: not-allowed;
+    }   
+    a:hover{
+        text-decoration: none;
+    }
+
+    a{
+        color: rgb(61, 59, 59);
+    }
+
+    .active-video-link{
+        color: rgb(206, 202, 196);
+    }
+
+    .active-video-link:hover{
+        text-decoration: none;
+        color: rgb(255, 255, 255);
+    }
+    
+</style>
+<br>
+<br>
+<div class ="container-fluid">
+    <div>
+        <div class = "row">
+            <div class="col">
+                <div class="mx-auto"><iframe id="player" class="mx-auto" width="100%" height="515" 
+                    src="https://www.youtube.com/embed/{{video.video_id}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+            </div>
+            <div class="col-3">
+                <ul id="video_list" class="list-group overflow-y-scroll">
+                {% for v in videos  %}
+                 <li class="list-group-item {% if v == video %} active-video {% endif %}">
+                    <a class="{% if v == video %} active-video-link {% endif %}" href="?lecture={{v.serial_number}}">
+                        {{v}}
+                    </a>
+                 </li>
+                {% endfor %}
+                </ul>
+                
+            </div>
+        </div>
+      
+        <div class="mt-3">
+           
+            <div class="card">
+                    <div class="card-body">
+                    <h5 class="card-title">{{course.name}}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{course.desc}}</h6>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+              </div>
+        </div>
+
+        
+        <div class="mt-3">
+           <div class="card">
+          
+                    <div class="card-body">
+                    <h5 class="card-title">Prerequisite</h5>
+                    <p class="card-text">
+                    <ul>
+                    {% for pre in course.prerequisite_set.all  %}
+                     <li>{{pre.description}}</li>
+                    {% endfor %}
+                    </ul>
+                    </p>
+                    </div>
+              </div>
+        </div>
+        <div class="mt-3">
+            <div class="card">
+           
+                     <div class="card-body">
+                     <h5 class="card-title">Learning</h5>
+                     <p class="card-text">
+                    <ul>
+                     {% for lre in course.learning_set.all  %}
+                      <li>{{lre.description}}</li>
+                     {% endfor %}
+                    </ul>
+                     </p>
+                     </div>
+               </div>
+         </div>
+    </div>
+
+</div>
+
+
+
+{% endblock content  %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'course/css/style.css' %}" >
+{% endblock css %}
+{% block JS %}<script src="{% static 'course/js/particular.js' %}"></script>{% endblock JS %}

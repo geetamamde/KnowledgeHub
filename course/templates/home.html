@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load simple_tags %}
+{% block content %}
+<style>
+    .card{
+        margin-bottom: 30px;
+    }
+</style>
+
+<h4> let's gain some Knowledge ... {{request.user}}</h4>
+
+<div class = "container-fluid">
+    <br>
+
+<div class="row">
+    {% for cou in object_list %}
+    
+  
+    <div class='col mx-auto'>
+    
+            <div class="card mx-auto" style="width: 18rem;">
+                <img src="{{cou.thumbnail.url}}" class="card-img-top" alt="..." style="height: 200px;">
+                <div class="card-body h-100">
+                <h5 class="card-title">{{cou.name}}</h5>
+                <p class="card-text m-0 p-0">
+                    Save {{cou.discount}} %
+                    <br>
+                  <span>   
+                    <del>{{cou.price |money }}</del>
+                    &nbsp;
+                    
+                    <span>{% sellprice cou.price cou.discount as holdvalue%} {{holdvalue|money}}</span>
+                   </span>
+                </p>
+                
+                </div>
+                
+                <div class="card-footer p-0 ">
+              
+                {% is_enrolled request course as enrolled %} 
+                    <div class="row no-gutters">
+                    {% if enrolled %}
+                    <div class="col border-right">
+                        <a href="/course/{{course.slug}}" class="btn btn-light btn-block">Start Course</a>
+                    </div>
+                    {% else%}
+                    <div class="col border-right"><a href="/checkout/{{cou.slug}}" class="btn btn-light btn-block">Enroll now</a></div>
+                    <div class="col"><a href="/course/{{cou.slug}}" class="btn btn-light btn-block">Know More</a></div>
+                    {% endif %}
+                    </div>
+                </div>
+            </div>
+    </div>
+    {% endfor %}
+    </div>
+</div>
+  {% endblock content  %}
